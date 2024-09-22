@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Generator Test</h1>
+    <form id="linkForm">
+        <label>
+            connectX: 
+            <input type="checkbox" name="connectX" value="1">
+        </label><br>
+        <label>
+            docX: 
+            <input type="checkbox" name="docX" value="1">
+        </label><br>
+        <label>
+            calX: 
+            <input type="checkbox" name="calX" value="1">
+        </label><br>
+        <label>
+            mailX: 
+            <input type="checkbox" name="mailX" value="1">
+        </label><br>
+        <button type="submit">Generate Links</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {
+                connectX: formData.has('connectX') ? 1 : 0,
+                docX: formData.has('docX') ? 1 : 0,
+                calX: formData.has('calX') ? 1 : 0,
+                mailX: formData.has('mailX') ? 1 : 0
+            };
+
+            fetch('http://127.0.0.1:5000/generate_link', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('result').innerHTML = JSON.stringify(result, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
