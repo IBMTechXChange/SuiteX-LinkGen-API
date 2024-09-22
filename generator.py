@@ -13,6 +13,10 @@ CORS(app)
 
 links_storage = {}
 
+@app.route('/', methods=['GET'])
+def status_check():
+    return jsonify({'status': 'works baby!'}), 200
+    
 @app.route('/generate_link', methods=['POST'])
 def generate_link():
     data = request.get_json()
